@@ -1,0 +1,47 @@
+schema_version: 1
+
+context:
+  name: de-pflanzenschutzmittelzulassung
+  version: "0.1.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/de-pflanzenschutzmittelzulassung-${{ version }}.tar.gz
+  sha256: 79fddb559471fda269c7ce5699b6082aa21973f7de6ce6301343240b27004752
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - poetry
+  run:
+    - python >=${{ python_min }}
+    - python-dateutil
+    - urllib3 >=1.25.3
+
+tests:
+  - python:
+      imports:
+        - deutschland.pflanzenschutzmittelzulassung
+      pip_check: true
+      python_version:
+        - ${{ python_min }}
+        - "*"
+
+about:
+  summary: ORDS generated API for api-v1
+  license: Apache-2.0
+  license_file: LICENSE
+  homepage: https://github.com/bundesAPI/pflanzenschutzmittelzulassung-api
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
